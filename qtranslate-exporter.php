@@ -9,11 +9,11 @@ Author URI: http://kau-boys.de
 */
 
 // update the export language into the qTranslate config so that the correct language will be exported 
-function gtrans_expoter_change_language(){
+function qtrans_exporter_change_language(){
 	global $q_config;
-	$q_config['language'] = get_option( 'gtrans_expoter_export_language', 'en' );
+	$q_config['language'] = get_option( 'qtrans_exporter_export_language', 'en' );
 }
-add_action( 'export_wp', 'gtrans_expoter_change_language' );
+add_action( 'export_wp', 'qtrans_exporter_change_language' );
 
 // This is where the magic happens. Just add the two filters so that also the exported text will be changed.
 add_filter('the_content_export', 'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage', 0);
@@ -23,12 +23,12 @@ add_filter('the_excerpt_export', 'qtrans_useCurrentLanguageIfNotFoundUseDefaultL
 /*
  * ADMIN AREA FUNCTIONS
  */
-function gtrans_expoter_init() {
-	load_plugin_textdomain( 'gtrans_expoter', false, dirname( plugin_basename( __FILE__ ) ) );
+function qtrans_exporter_init() {
+	load_plugin_textdomain( 'qtrans_exporter', false, dirname( plugin_basename( __FILE__ ) ) );
 }
-add_action( 'init', 'gtrans_expoter_init' );
+add_action( 'init', 'qtrans_exporter_init' );
 
-function gtrans_expoter_filter_plugin_actions( $links, $file ) {
+function qtrans_exporter_filter_plugin_actions( $links, $file ) {
 	static $this_plugin;
 	if (!$this_plugin) $this_plugin = plugin_basename( __FILE__ );
 	
@@ -38,35 +38,35 @@ function gtrans_expoter_filter_plugin_actions( $links, $file ) {
 	}
 	return $links;
 }
-add_filter( 'plugin_action_links', 'gtrans_expoter_filter_plugin_actions', 10, 2 );
+add_filter( 'plugin_action_links', 'qtrans_exporter_filter_plugin_actions', 10, 2 );
 
-function gtrans_expoter_admin_menu() {
-	add_options_page( 'qTranslate Exporter settings', 'qTranslate Exporter', 8, __FILE__, 'gtrans_expoter_admin_settings' );	
+function qtrans_exporter_admin_menu() {
+	add_options_page( 'qTranslate Exporter settings', 'qTranslate Exporter', 8, __FILE__, 'qtrans_exporter_admin_settings' );	
 }
-add_action( 'admin_menu', 'gtrans_expoter_admin_menu' );
+add_action( 'admin_menu', 'qtrans_exporter_admin_menu' );
 
-function gtrans_expoter_admin_settings() {
+function qtrans_exporter_admin_settings() {
 	if(isset($_POST['save'])){
-		update_option( 'gtrans_expoter_export_language', $_POST['gtrans_expoter_export_language'] );
+		update_option( 'qtrans_exporter_export_language', $_POST['qtrans_exporter_export_language'] );
 		$settings_saved = true;
 	}
 	$qtranslate_enabled_languages = get_option( 'qtranslate_enabled_languages' );
-	$export_language = get_option( 'gtrans_expoter_export_language' );
+	$export_language = get_option( 'qtrans_exporter_export_language' );
 ?>
 
 <div class="wrap">
 	<?php screen_icon(); ?>
-	<h2><?php _e( 'qTranslate Exporter', 'gtrans_expoter' ) ?></h2>
+	<h2><?php _e( 'qTranslate Exporter', 'qtrans_exporter' ) ?></h2>
 	<?php if( $settings_saved ) : ?>
 	<div id="message" class="updated fade"><p><strong><?php _e( 'Options saved.' ) ?></strong></p></div>
 	<?php endif ?>
 	<p>
-		<?php _e( 'Just choose the language with you want to export.', 'gtrans_expoter' ) ?>
+		<?php _e( 'Just choose the language with you want to export.', 'qtrans_exporter' ) ?>
 	</p>
 	<form method="post" action="">
 		<p>
-			<label for="gtrans_expoter_export_language"><?php _e( 'Export language', 'gtrans_expoter' ) ?>: </label>
-			<select id="gtrans_expoter_export_language" name="gtrans_expoter_export_language">
+			<label for="qtrans_exporter_export_language"><?php _e( 'Export language', 'qtrans_exporter' ) ?>: </label>
+			<select id="qtrans_exporter_export_language" name="qtrans_exporter_export_language">
 			<?php foreach( $qtranslate_enabled_languages as $lang ) : ?>
 				<option value="<?php echo $lang ?>"<?php echo ($lang == $export_language)? ' selected="selected"' : '' ?>>
 					<?php _e( $lang, 'qtrans' ) ?>
